@@ -1,23 +1,21 @@
 class ListsController < ApplicationController
     def index
       @lists = List.all
-      render :index
     end
 
     def show
       @list = List.find(params[:id])
-      render :show
     end
 
     def new
       @list = List.new
-      render :new
     end
 
     def create
       @list = List.new(list_params)
       if @list.save
-        redirect_to lists_path
+        flash[:notice] = "List successfully added!"
+        redirect_to lists_path(@list)
       else
         render :new
       end
@@ -25,13 +23,13 @@ class ListsController < ApplicationController
 
     def edit
       @list = List.find(params[:id])
-      render :edit
     end
 
     def update
       @list = List.find(params[:id])
       if @list.update(list_params)
-        redirect_to lists_path
+        flash[:notice] = "List successfully updated!"
+        redirect_to lists_path(@list)
       else
         render :edit
       end
@@ -39,9 +37,9 @@ class ListsController < ApplicationController
 
   def destroy
       @list = List.find(params[:id])
-      
       @list.destroy
-      redirect_to lists_path
+      flash[:notice] = "List successfully destroyed!"
+      redirect_to lists_path(@list)
   end
 
   private
